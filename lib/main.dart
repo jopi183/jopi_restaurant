@@ -3,7 +3,7 @@ import 'package:jopi_restaurant/dashboardpage.dart';
 import 'package:jopi_restaurant/loginpage.dart';
 import 'package:jopi_restaurant/mainpage.dart';
 import 'package:jopi_restaurant/detailpage.dart';
-import 'package:jopi_restaurant/restaurant.dart';
+import 'package:jopi_restaurant/model/restaurant.dart';
 void main() {
   runApp(const MyApp());
 }

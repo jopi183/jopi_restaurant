@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jopi_restaurant/restaurant.dart';
+import 'package:jopi_restaurant/model/restaurant.dart';
 import 'package:jopi_restaurant/detailpage.dart';
 class MainPage extends StatelessWidget{
   final String username;
