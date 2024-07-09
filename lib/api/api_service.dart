@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:jopi_restaurant/model/listrestaurant.dart';
 import 'package:jopi_restaurant/model/detailrestaurant.dart';
@@ -13,10 +14,13 @@ class ApiService {
       } else {
         throw Exception('Failed to load list restaurants');
       }
+    }on SocketException{
+      throw Exception('No Internet Connection');
     } catch (e) {
-      throw Exception('Error ###');
+      rethrow;
     }
   }
+
 
   Future<DetailRestaurant> restaurantDetail(String id) async {
     try {
@@ -26,8 +30,10 @@ class ApiService {
       } else {
         throw Exception('Failed to load detail restaurants');
       }
+    }on SocketException{
+      throw Exception('No Internet Connection');
     } catch (e) {
-      throw Exception('Error ###');
+      rethrow;
     }
   }
 
@@ -39,8 +45,10 @@ class ApiService {
       } else {
         throw Exception('Failed to load search restaurants');
       }
+    }on SocketException{
+      throw Exception('No Internet Connection');
     } catch (e) {
-      throw Exception('Error ###');
+      rethrow;
     }
   }
 }
