@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:jopi_restaurant/model/restaurant.dart';
 import 'package:jopi_restaurant/api/api_service.dart';
+import 'package:jopi_restaurant/model/listrestaurant.dart';
+import 'package:jopi_restaurant/model/detailrestaurant.dart';
+import 'package:jopi_restaurant/model/searchrestaurant.dart';
 
 enum ResultState { loading, noData, hasData, error }
 
@@ -9,10 +11,11 @@ class RestaurantProvider extends ChangeNotifier {
 
   RestaurantProvider({required this.apiService}) {
     _fetchAllRestaurants();
+    _searchRestaurant = SearchRestaurant(error: false, founded: 0, restaurants: []); // Berikan nilai awal pada _searchRestaurant
   }
 
   late ListRestaurant _listRestaurant;
-  late SearchRestaurant _searchRestaurant;
+  late SearchRestaurant _searchRestaurant; // Berikan nilai awal pada _searchRestaurant
   late DetailRestaurant _detailRestaurant;
   String _message = '';
   ResultState _state = ResultState.loading;
@@ -53,7 +56,7 @@ class RestaurantProvider extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       _state = ResultState.error;
-      _message = 'Failed to load restaurant details';
+      _message = 'Failed to load detail restaurant ';
       notifyListeners();
     }
   }
@@ -63,12 +66,12 @@ class RestaurantProvider extends ChangeNotifier {
       _state = ResultState.loading;
       notifyListeners();
       final searchResult = await apiService.searchRestaurant(query);
-      if (searchResult.restaurants.isEmpty) {
+      _searchRestaurant = searchResult;
+      if (_searchRestaurant.restaurants.isEmpty) {
         _state = ResultState.noData;
         _message = 'No restaurants found';
       } else {
         _state = ResultState.hasData;
-        _searchRestaurant = searchResult;
       }
       notifyListeners();
     } catch (e) {

@@ -6,6 +6,7 @@ import 'package:jopi_restaurant/detailpage.dart';
 import 'package:jopi_restaurant/provider/restaurant_provider.dart';
 import 'package:jopi_restaurant/api/api_service.dart';
 import 'package:provider/provider.dart';
+import 'package:jopi_restaurant/searchpage.dart';
 void main() {
   runApp(
     MultiProvider(
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
       routes: {
         DashboardPage.routeName: (context)=>const DashboardPage(),
         LoginPage.routeName: (context)=>  LoginPage(),
+        SearchPage.routeName: (context)=>const SearchPage(),
         MainPage.routeName: (context)=> MainPage(
             username: ModalRoute.of(context)?.settings.arguments as String),
         RestaurantDetailPage.routeName: (context) => RestaurantDetailPage(

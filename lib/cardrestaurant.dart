@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jopi_restaurant/detailpage.dart';
-import 'package:jopi_restaurant/model/restaurant.dart';
+import 'package:jopi_restaurant/model/listrestaurant.dart';
 
 class CardRestaurant extends StatelessWidget {
   final Restaurant restaurant;
@@ -15,7 +15,7 @@ class CardRestaurant extends StatelessWidget {
         Navigator.pushNamed(
           context,
           RestaurantDetailPage.routeName,
-          arguments: restaurant,
+          arguments: restaurant.id,
         );
       },
       child: Container(
