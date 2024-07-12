@@ -1,4 +1,7 @@
+import 'dart:io';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:jopi_restaurant/preferences/preferences_helper.dart';
 import 'package:jopi_restaurant/provider/preferences_provider.dart';
 import 'package:jopi_restaurant/ui/dashboardpage.dart';
@@ -15,21 +18,25 @@ import 'package:jopi_restaurant/style/styles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jopi_restaurant/provider/database_provider.dart';
 import 'package:jopi_restaurant/model/db/database_helper.dart';
-void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) => RestaurantProvider(apiService: ApiService()),
-        ),
-      ],
-      child: MyApp(),
-    ),
-  );
+import 'package:jopi_restaurant/provider/scheduling_provider.dart';
+import 'package:jopi_restaurant/utils/notification_helper.dart';
+import 'package:jopi_restaurant/utils/background_service.dart';
+import 'package:jopi_restaurant/navigation.dart';
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final NotificationHelper _notificationHelper = NotificationHelper();
+  final BackgroundService _service = BackgroundService();
+  _service.initializeIsolate();
+  if (Platform.isAndroid) {
+    await AndroidAlarmManager.initialize();
+  }
+  await _notificationHelper.initNotifications(flutterLocalNotificationsPlugin);
+
+  runApp(const MyApp());
 }
-
-
-
 
 class MyApp extends StatelessWidget {
   const MyApp({Key?key}): super(key: key);
@@ -71,6 +78,7 @@ class MyApp extends StatelessWidget {
                 child: child,
               ),
             );
+            navigatorKey: navigatorKey;
           },
           initialRoute: DashboardPage.routeName,
           routes: {

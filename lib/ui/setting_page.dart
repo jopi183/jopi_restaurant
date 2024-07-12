@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:jopi_restaurant/provider/preferences_provider.dart';
+import 'package:jopi_restaurant/provider/scheduling_provider.dart';
 class SettingPage extends StatelessWidget {
   static const routeName = '/setting';
   static const String settingsTitle = 'Settings';
@@ -31,8 +32,8 @@ class SettingPage extends StatelessWidget {
                     return Switch.adaptive(
                       value: provider.isDailyNewsActive,
                       onChanged: (value) async {
-                          scheduled.scheduledNews(value);
-                          provider.enableDailyNews(value);
+                          scheduled.scheduledInfo(value);
+                          provider.enableDailyInfo(value);
                       },
                     );
                   },
