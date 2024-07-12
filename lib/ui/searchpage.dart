@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:jopi_restaurant/provider/restaurant_provider.dart';
-import 'package:jopi_restaurant/cardrestaurant.dart';
+import 'package:jopi_restaurant/ui/cardrestaurant.dart';
 import 'package:jopi_restaurant/model/listrestaurant.dart';
 import 'package:jopi_restaurant/model/searchrestaurant.dart';
 import 'package:jopi_restaurant/detailpage.dart';
