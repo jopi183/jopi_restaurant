@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jopi_restaurant/loginpage.dart';
+import 'package:jopi_restaurant/ui/loginpage.dart';
 class DashboardPage extends StatelessWidget{
   static const routeName = '/dashboard';
   const DashboardPage ({Key?key}): super(key: key);

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jopi_restaurant/searchpage.dart';
+import 'package:jopi_restaurant/ui/searchpage.dart';
 import 'package:provider/provider.dart';
 import 'package:jopi_restaurant/provider/restaurant_provider.dart';
 import 'package:jopi_restaurant/ui/cardrestaurant.dart';

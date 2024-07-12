@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:jopi_restaurant/dashboardpage.dart';
-import 'package:jopi_restaurant/loginpage.dart';
-import 'package:jopi_restaurant/mainpage.dart';
-import 'package:jopi_restaurant/detailpage.dart';
+import 'package:jopi_restaurant/ui/dashboardpage.dart';
+import 'package:jopi_restaurant/ui/loginpage.dart';
+import 'package:jopi_restaurant/ui/mainpage.dart';
+import 'package:jopi_restaurant/ui/detailpage.dart';
 import 'package:jopi_restaurant/provider/restaurant_provider.dart';
 import 'package:jopi_restaurant/api/api_service.dart';
 import 'package:provider/provider.dart';
-import 'package:jopi_restaurant/searchpage.dart';
+import 'package:jopi_restaurant/ui/searchpage.dart';
 void main() {
   runApp(
     MultiProvider(

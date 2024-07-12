@@ -4,7 +4,7 @@ import 'package:jopi_restaurant/provider/restaurant_provider.dart';
 import 'package:jopi_restaurant/ui/cardrestaurant.dart';
 import 'package:jopi_restaurant/model/listrestaurant.dart';
 import 'package:jopi_restaurant/model/searchrestaurant.dart';
-import 'package:jopi_restaurant/detailpage.dart';
+import 'package:jopi_restaurant/ui/detailpage.dart';
 
 class SearchPage extends StatelessWidget {
   static const routeName = '/search_restaurant';

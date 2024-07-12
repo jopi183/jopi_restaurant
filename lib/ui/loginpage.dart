@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jopi_restaurant/mainpage.dart';
+import 'package:jopi_restaurant/ui/mainpage.dart';
 class LoginPage extends StatefulWidget{
   static const routeName = '/login';
   @override
