@@ -3,6 +3,9 @@ import 'package:jopi_restaurant/ui/searchpage.dart';
 import 'package:provider/provider.dart';
 import 'package:jopi_restaurant/provider/restaurant_provider.dart';
 import 'package:jopi_restaurant/ui/cardrestaurant.dart';
+import 'package:jopi_restaurant/ui/setting_page.dart ';
+import 'package:jopi_restaurant/ui/favorite_page.dart';
+
 
 class MainPage extends StatefulWidget {
   final String username;
@@ -14,6 +17,20 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  int _selectedIndex = 0;
+
+  static List<Widget> _widgetOptions = <Widget>[
+    RestaurantPage(),
+    FavoritePage(),
+    SettingPage(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,27 +48,52 @@ class _MainPageState extends State<MainPage> {
           ),
         ],
       ),
-      body: Consumer<RestaurantProvider>(
-        builder: (context, provider, child) {
-          if (provider.state == ResultState.loading) {
-            return Center(child: CircularProgressIndicator());
-          } else if (provider.state == ResultState.hasData) {
-            return ListView.builder(
-              itemCount: provider.listRestaurant.restaurants.length,
-              itemBuilder: (context, index) {
-                var restaurant = provider.listRestaurant.restaurants[index];
-                return CardRestaurant(restaurant: restaurant);
-              },
-            );
-          } else if (provider.state == ResultState.noData) {
-            return Center(child: Text(provider.message));
-          } else if (provider.state == ResultState.error) {
-            return Center(child: Text(provider.message));
-          } else {
-            return Center(child: Text(''));
-          }
-        },
+      body: _widgetOptions.elementAt(_selectedIndex),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.restaurant),
+            label: 'Restaurant',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: 'Favorite',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Setting',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
       ),
+    );
+  }
+}
+class RestaurantPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<RestaurantProvider>(
+      builder: (context, provider, child) {
+        if (provider.state == ResultState.loading) {
+          return Center(child: CircularProgressIndicator());
+        } else if (provider.state == ResultState.hasData) {
+          return ListView.builder(
+            itemCount: provider.listRestaurant.restaurants.length,
+            itemBuilder: (context, index) {
+              var restaurant = provider.listRestaurant.restaurants[index];
+              return CardRestaurant(restaurant: restaurant);
+            },
+          );
+        } else if (provider.state == ResultState.noData) {
+          return Center(child: Text(provider.message));
+        } else if (provider.state == ResultState.error) {
+          return Center(child: Text(provider.message));
+        } else {
+          return Center(child: Text(''));
+        }
+      },
     );
   }
 }
