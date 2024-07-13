@@ -5,6 +5,8 @@ import 'package:jopi_restaurant/model/searchrestaurant.dart';
 import 'package:jopi_restaurant/navigation.dart';
 import 'package:rxdart/subjects.dart';
 
+import '../model/listrestaurant.dart';
+
 final selectNotificationSubject = BehaviorSubject<String>();
 
 class NotificationHelper {
@@ -18,16 +20,15 @@ class NotificationHelper {
 
   Future<void> initNotifications(
       FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
-    var initializationSettingsAndroid =
-    const AndroidInitializationSettings('app_icon');
+    var initializationSettingsAndroid = const AndroidInitializationSettings('app_icon');
 
-    var initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid);
+    var initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
 
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: (String? payload) async {
+        onDidReceiveNotificationResponse: (NotificationResponse details) async {
+          final payload = details.payload;
           if (payload != null) {
-            log('notification payload: $payload');
+            print('notification payload: ' + payload);
           }
           selectNotificationSubject.add(payload ?? 'empty payload');
         });
@@ -35,7 +36,7 @@ class NotificationHelper {
 
   Future<void> showNotification(
       FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin,
-      Restaurant articles) async {
+      ListRestaurant listrestaurant) async {
     var channelId = "1";
     var channelName = "channel_01";
     var channelDescription = "dicoding news channel";
@@ -48,23 +49,22 @@ class NotificationHelper {
         ticker: 'ticker',
         styleInformation: const DefaultStyleInformation(true, true));
 
-    var platformChannelSpecifics = NotificationDetails(
-        android: androidPlatformChannelSpecifics);
+    var platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
 
-    var titleNotification = "<b>Headline News</b>";
-    var titleNews = articles.articles[0].title;
+    var titleNotification = "<b>Random Restaurant</b>";
+    var titleNews = listrestaurant.restaurants[0].name;
 
     await flutterLocalNotificationsPlugin.show(
         0, titleNotification, titleNews, platformChannelSpecifics,
-        payload: json.encode(articles.toJson()));
+        payload: json.encode(listrestaurant.toJson()));
   }
 
   void configureSelectNotificationSubject(String route) {
     selectNotificationSubject.stream.listen(
           (String payload) async {
-        var data = Restaurant.fromJson(json.decode(payload));
-        var article = data.articles[0];
-        Navigation.intentWithData(route, article);
+        var data = ListRestaurant.fromJson(json.decode(payload));
+        var restaurant= data.restaurants[0];
+        Navigation.intentWithData(route, restaurant);
       },
     );
   }

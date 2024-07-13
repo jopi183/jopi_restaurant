@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:jopi_restaurant/provider/preferences_provider.dart';
 import 'package:jopi_restaurant/provider/scheduling_provider.dart';
+
 class SettingPage extends StatelessWidget {
   static const routeName = '/setting';
   static const String settingsTitle = 'Settings';
 
   const SettingPage({Key? key}) : super(key: key);
+
   @override
   Widget _buildList(BuildContext context) {
     return Consumer<PreferencesProvider>(
@@ -26,14 +28,14 @@ class SettingPage extends StatelessWidget {
             ),
             Material(
               child: ListTile(
-                title: const Text('Scheduling News'),
+                title: const Text('Notification Restaurant'),
                 trailing: Consumer<SchedulingProvider>(
                   builder: (context, scheduled, _) {
                     return Switch.adaptive(
                       value: provider.isDailyNewsActive,
                       onChanged: (value) async {
-                          scheduled.scheduledInfo(value);
-                          provider.enableDailyInfo(value);
+                        provider.enbableDailyNews(value);
+                        scheduled.scheduledInfo(value);
                       },
                     );
                   },

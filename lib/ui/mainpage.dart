@@ -3,9 +3,8 @@ import 'package:jopi_restaurant/ui/searchpage.dart';
 import 'package:provider/provider.dart';
 import 'package:jopi_restaurant/provider/restaurant_provider.dart';
 import 'package:jopi_restaurant/ui/cardrestaurant.dart';
-import 'package:jopi_restaurant/ui/setting_page.dart ';
+import 'package:jopi_restaurant/ui/setting_page.dart';
 import 'package:jopi_restaurant/ui/favorite_page.dart';
-
 
 class MainPage extends StatefulWidget {
   final String username;
@@ -34,21 +33,26 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('JoPi Restaurant'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                SearchPage.routeName,
-              );
-            },
+      body: Stack(
+        children: [
+          _widgetOptions.elementAt(_selectedIndex),
+          Positioned(
+            top: 20.0,
+            right: 16.0,
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  SearchPage.routeName,
+                );
+              },
+              child: Icon(
+                Icons.search,
+              ),
+            ),
           ),
         ],
       ),
-      body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -71,6 +75,7 @@ class _MainPageState extends State<MainPage> {
     );
   }
 }
+
 class RestaurantPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

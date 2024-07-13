@@ -1,34 +1,52 @@
 import 'dart:convert';
-import 'package:jopi_restaurant/model/restaurant.dart';
+
 class ListRestaurant {
-  bool error;
-  String message;
-  int count;
   List<Restaurant> restaurants;
 
-  ListRestaurant({
-    required this.error,
-    required this.message,
-    required this.count,
-    required this.restaurants,
-  });
-
-  factory ListRestaurant.fromRawJson(String str) => ListRestaurant.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
+  ListRestaurant({required this.restaurants});
 
   factory ListRestaurant.fromJson(Map<String, dynamic> json) => ListRestaurant(
-    error: json["error"],
-    message: json["message"],
-    count: json["count"],
-    restaurants: List<Restaurant>.from(json["restaurants"].map((x) => Restaurant.fromJson(x))),
+    restaurants: List<Restaurant>.from(
+        json["restaurants"].map((x) => Restaurant.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "error": error,
-    "message": message,
-    "count": count,
     "restaurants": List<dynamic>.from(restaurants.map((x) => x.toJson())),
   };
 }
 
+class Restaurant {
+  String id;
+  String name;
+  String city;
+  String description;
+  String pictureId;
+  double rating;
+
+  Restaurant({
+    required this.id,
+    required this.name,
+    required this.city,
+    required this.description,
+    required this.pictureId,
+    required this.rating,
+  });
+
+  factory Restaurant.fromJson(Map<String, dynamic> json) => Restaurant(
+    id: json["id"],
+    name: json["name"],
+    city: json["city"],
+    description: json["description"],
+    pictureId: json["pictureId"],
+    rating: json["rating"].toDouble(),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+    "city": city,
+    "description": description,
+    "pictureId": pictureId,
+    "rating": rating,
+  };
+}

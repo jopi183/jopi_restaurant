@@ -10,7 +10,7 @@ class SchedulingProvider extends ChangeNotifier {
 
   bool get isScheduled => _isScheduled;
 
-  Future<bool> scheduledNews(bool value) async {
+  Future<bool> scheduledInfo(bool value) async {
     _isScheduled = value;
     if (_isScheduled) {
       log('Scheduling News Activated');

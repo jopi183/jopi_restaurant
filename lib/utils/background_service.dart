@@ -3,6 +3,7 @@ import 'dart:isolate';
 import 'package:jopi_restaurant/main.dart';
 import 'package:jopi_restaurant/api/api_service.dart';
 import 'package:jopi_restaurant/utils/notification_helper.dart';
+
 final ReceivePort port = ReceivePort();
 
 class BackgroundService {
@@ -26,7 +27,7 @@ class BackgroundService {
   static Future<void> callback() async {
     print('Alarm fired!');
     final NotificationHelper notificationHelper = NotificationHelper();
-    var result = await ApiService().topHeadlines();
+    var result = await ApiService().restaurantList();
     await notificationHelper.showNotification(
         flutterLocalNotificationsPlugin, result);
 

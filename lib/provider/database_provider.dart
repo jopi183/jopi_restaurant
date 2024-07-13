@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
-import 'package:jopi_restaurant/provider/restaurant_provider.dart';
-import 'package:jopi_restaurant/model/restaurant.dart';
+import 'package:jopi_restaurant/model/listrestaurant.dart';
 import 'package:jopi_restaurant/model/db/database_helper.dart';
+import 'package:jopi_restaurant/utils/result_state.dart';
 
 class DatabaseProvider extends ChangeNotifier {
   final DatabaseHelper databaseHelper;
@@ -20,11 +20,11 @@ class DatabaseProvider extends ChangeNotifier {
 
   List<Restaurant> _bookmarks = [];
 
-  List <Restaurant> get bookmarks => _bookmarks;
+  List<Restaurant> get bookmarks => _bookmarks;
 
   void _getBookmarks() async {
     _bookmarks = await databaseHelper.getBookmarks();
-    if (_bookmarks.length > 0) {
+    if (_bookmarks.isNotEmpty) {
       _state = ResultState.hasData;
     } else {
       _state = ResultState.noData;
@@ -32,28 +32,27 @@ class DatabaseProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
-  void addBookmark(String restaurantId) async {
+
+  void addBookmark(Restaurant restaurant) async {
     try {
-      await databaseHelper.insertBookmark(Restaurant.fromJson({'id': restaurantId}));
+      await databaseHelper.insertBookmark(restaurant);
       _getBookmarks();
     } catch (e) {
-      print('Failed to add restaurant with ID: $restaurantId to bookmarks.');
+      print('Failed to add restaurant with ID: ${restaurant.id} to bookmarks.');
       _state = ResultState.error;
       _message = 'Error: $e';
       notifyListeners();
     }
   }
 
-
-
-  Future<bool> isBookmarked(String id) async {
-    final bookmarkedArticle = await databaseHelper.getBookmarkById(id);
-    return bookmarkedArticle.isNotEmpty;
+  Future<bool> isBookmarked(Restaurant restaurant) async {
+    final bookmarkedRestaurant = await databaseHelper.getBookmarkById(restaurant.id);
+    return bookmarkedRestaurant != null;
   }
 
-  void removeBookmark(String id) async {
+  void removeBookmark(Restaurant restaurant) async {
     try {
-      await databaseHelper.removeBookmark(id);
+      await databaseHelper.removeBookmark(restaurant.id);
       _getBookmarks();
     } catch (e) {
       _state = ResultState.error;

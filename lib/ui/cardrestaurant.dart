@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:jopi_restaurant/ui/detailpage.dart';
-import 'package:jopi_restaurant/model/restaurant.dart';
 import 'package:provider/provider.dart';
+import 'package:jopi_restaurant/ui/detailpage.dart';
+import 'package:jopi_restaurant/model/listrestaurant.dart';
 import 'package:jopi_restaurant/provider/database_provider.dart';
 
 class CardRestaurant extends StatelessWidget {
@@ -14,7 +14,7 @@ class CardRestaurant extends StatelessWidget {
     return Consumer<DatabaseProvider>(
       builder: (context, provider, child) {
         return FutureBuilder<bool>(
-          future: provider.isBookmarked(restaurant.id),
+          future: provider.isBookmarked(restaurant),
           builder: (context, snapshot) {
             var isBookmarked = snapshot.data ?? false;
             return GestureDetector(
@@ -35,7 +35,7 @@ class CardRestaurant extends StatelessWidget {
                       color: Colors.grey.withOpacity(0.5),
                       spreadRadius: 2,
                       blurRadius: 7,
-                      offset: Offset(0, 3), // changes position of shadow
+                      offset: Offset(0, 3),
                     ),
                   ],
                 ),
@@ -98,17 +98,7 @@ class CardRestaurant extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                isBookmarked
-                                    ? IconButton(
-                                  icon: const Icon(Icons.bookmark),
-                                  color: Theme.of(context).colorScheme.secondary,
-                                  onPressed: () => provider.removeBookmark(restaurant.id),
-                                )
-                                    : IconButton(
-                                  icon: const Icon(Icons.bookmark_border),
-                                  color: Theme.of(context).colorScheme.secondary,
-                                  onPressed: () => provider.addBookmark(restaurant.id),
-                                ),
+                                FavoriteButton(restaurant: restaurant),
                               ],
                             ),
                           ],
@@ -119,6 +109,57 @@ class CardRestaurant extends StatelessWidget {
                 ),
               ),
             );
+          },
+        );
+      },
+    );
+  }
+}
+
+class FavoriteButton extends StatefulWidget {
+  final Restaurant restaurant;
+
+  const FavoriteButton({required this.restaurant, Key? key}) : super(key: key);
+
+  @override
+  State<FavoriteButton> createState() => _FavoriteButtonState();
+}
+
+class _FavoriteButtonState extends State<FavoriteButton> {
+  bool isFavorite = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkIfFavorite();
+  }
+
+  void _checkIfFavorite() async {
+    final provider = Provider.of<DatabaseProvider>(context, listen: false);
+    bool favoriteStatus = await provider.isBookmarked(widget.restaurant);
+    setState(() {
+      isFavorite = favoriteStatus;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<DatabaseProvider>(
+      builder: (context, provider, child) {
+        return IconButton(
+          icon: Icon(
+            isFavorite ? Icons.favorite : Icons.favorite_border,
+            color: Colors.red,
+          ),
+          onPressed: () {
+            if (isFavorite) {
+              provider.removeBookmark(widget.restaurant);
+            } else {
+              provider.addBookmark(widget.restaurant);
+            }
+            setState(() {
+              isFavorite = !isFavorite;
+            });
           },
         );
       },

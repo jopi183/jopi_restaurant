@@ -1,6 +1,6 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:jopi_restaurant/model/restaurant.dart';
+import 'package:jopi_restaurant/model/listrestaurant.dart';
 
 class DatabaseHelper {
   static DatabaseHelper? _instance;
@@ -18,7 +18,6 @@ class DatabaseHelper {
     if (_database == null) {
       _database = await _initializeDb();
     }
-
     return _database;
   }
 
@@ -29,70 +28,54 @@ class DatabaseHelper {
       onCreate: (db, version) async {
         try {
           await db.execute('''CREATE TABLE $_tableFavorite(
-            pictureID TEXT PRIMARY KEY,
+            id TEXT PRIMARY KEY,
             name TEXT,
             description TEXT,
             city TEXT,
-            rating TEXT
-          )
-          ''');
-          print('Table $_tableFavorite created successfully'); // Tampilkan pesan keberhasilan pembuatan tabel di konsol
+            pictureId TEXT,
+            rating REAL
+          )''');
+          print('Table $_tableFavorite created successfully');
         } catch (e) {
           print('Error creating table: $e');
         }
       },
       version: 1,
     );
-
     return db;
   }
 
   Future<void> insertBookmark(Restaurant restaurant) async {
     final db = await database;
-    print(
-        'Inserting restaurant with ID: ${restaurant.id} into bookmarks...'); // Menampilkan ID restoran yang akan disimpan ke bookmark di console
     await db!.insert(_tableFavorite, restaurant.toJson());
   }
 
   Future<List<Restaurant>> getBookmarks() async {
     final db = await database;
     List<Map<String, dynamic>> results = await db!.query(_tableFavorite);
-
     return results.map((res) => Restaurant.fromJson(res)).toList();
   }
 
-  Future<Map> getBookmarkById(String id) async {
+  Future<Map<String, dynamic>?> getBookmarkById(String id) async {
     final db = await database;
-
     List<Map<String, dynamic>> results = await db!.query(
       _tableFavorite,
       where: 'id = ?',
       whereArgs: [id],
     );
-
     if (results.isNotEmpty) {
       return results.first;
     } else {
-      return {};
+      return null;
     }
   }
 
   Future<void> removeBookmark(String id) async {
     final db = await database;
-
     await db!.delete(
       _tableFavorite,
       where: 'id = ?',
       whereArgs: [id],
     );
-  }
-
-  Future<void> viewBookmarks() async {
-    final db = await database;
-    List<Map<String, dynamic>> bookmarks = await db!.query(_tableFavorite);
-
-    bookmarks.forEach((bookmark) {
-      print(bookmark); // Menampilkan data bookmark ke konsol
-    });
   }
 }
