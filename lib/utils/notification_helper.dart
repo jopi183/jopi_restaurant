@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:math';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:jopi_restaurant/model/searchrestaurant.dart';
 import 'package:jopi_restaurant/navigation.dart';
@@ -51,8 +52,9 @@ class NotificationHelper {
 
     var platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
 
-    var titleNotification = "<b>Random Restaurant</b>";
-    var titleNews = listrestaurant.restaurants[0].name;
+    var intValue = Random().nextInt(20);
+    var titleNotification = "<b>Rekomendasi Restoran</b>";
+    var titleNews = listrestaurant.restaurants[intValue].name;
 
     await flutterLocalNotificationsPlugin.show(
         0, titleNotification, titleNews, platformChannelSpecifics,
