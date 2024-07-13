@@ -6,6 +6,7 @@ import 'package:jopi_restaurant/model/detailrestaurant.dart';
 import 'package:jopi_restaurant/model/searchrestaurant.dart';
 
 class ApiService {
+
   Future<ListRestaurant> restaurantList() async {
     try {
       final response = await http.get(Uri.parse('https://restaurant-api.dicoding.dev/list'));

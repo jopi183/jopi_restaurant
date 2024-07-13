@@ -45,6 +45,8 @@ dependencies:
   flutter_local_notifications: ^17.2.1+1
   rxdart: ^0.28.0
   android_alarm_manager_plus: ^4.0.3
+  mockito: ^5.4.4
+  http_mock_adapter: ^0.6.1
 
 dev_dependencies:
   flutter_test:
